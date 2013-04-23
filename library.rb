@@ -38,15 +38,12 @@ class Book
     puts "\n"
   end
 
-  ## TODO: refactor the if forest
   def self.unread(author=nil)
-    puts "\n"
     if author
-      if @books.any? { |h| h[:author] == author }
-        @books.each do |book|
-          if book[:status] == "unread" && book[:author] == author
-            puts "\"#{book[:title]}\" by #{book[:author]} (#{book[:status]})"
-          end
+      puts "\n"
+      @books.each do |book|
+        if book[:status] == "unread" && book[:author] == author
+          puts "\"#{book[:title]}\" by #{book[:author]} (#{book[:status]})"
         end
       end
     else
@@ -63,7 +60,7 @@ class Book
   private
   def self.add_book(title, author, status="unread")
     if @books.any? { |h| h[:title] == title }
-      puts "\nThe library already has that book.\n\n"
+      puts "\nHorrible news: The library already has that book.\n\n"
     else
       @books << {title: title, author: author, status: status}
       puts "\nAdded \"#{title}\" by #{author}\n\n"
