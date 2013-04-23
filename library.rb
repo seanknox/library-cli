@@ -5,15 +5,16 @@ require 'readline'
 class Book
   attr_accessor :title, :author, :status, :books
 
+  @books ||=[]
+
   def initialize(title, author)
     @title = title
     @author = author
-    self.add_book(title, author)
+    self.class.add_book(title, author)
   end
 
 
   def self.read(title)
-    @books ||=[]
     read_status = { status: "read" }
     @books.collect! { |hash|
       if hash[:title] == title
@@ -26,7 +27,6 @@ class Book
   end
 
   def self.all(author=nil)
-    @books ||=[]
     puts "\n"
     @books.each do |book|
       if author
@@ -40,7 +40,6 @@ class Book
 
   ## TODO: refactor the if forest
   def self.unread(author=nil)
-    @books ||=[]
     puts "\n"
     if author
       if @books.any? { |h| h[:author] == author }
@@ -62,9 +61,7 @@ class Book
   end
 
   private
-
   def self.add_book(title, author, status="unread")
-    @books ||= []
     if @books.any? { |h| h[:title] == title }
       puts "\nThe library already has that book.\n\n"
     else
@@ -88,7 +85,7 @@ end
 def execute_command(command)
   case command
   when /^add "(.*)" "(.*)"$/
-    Book.add_book("#{$1}", "#{$2}")
+    Book.new("#{$1}", "#{$2}")
   when /^read "(.*)"$/
     Book.read $1
   when /^show all$/
