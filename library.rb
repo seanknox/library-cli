@@ -18,7 +18,7 @@ class Book
     read_status = { status: "read" }
     @books.collect! { |hash|
       if hash[:title] == title
-        puts "\nYou've read \"#{hash[:title]}\"!\n\n"
+        puts "You've read \"#{hash[:title]}\"!"
         hash.merge!(read_status) { |key, v1, v2| v2 }
       else
         hash
@@ -27,7 +27,6 @@ class Book
   end
 
   def self.all(author=nil)
-    puts "\n"
     @books.each do |book|
       if author
         puts "\"#{book[:title]}\" by #{book[:author]} (#{book[:status]})" if book[:author] == author
@@ -35,35 +34,30 @@ class Book
         puts "\"#{book[:title]}\" by #{book[:author]} (#{book[:status]})"
       end
     end
-    puts "\n"
   end
 
   def self.unread(author=nil)
     if author
-      puts "\n"
       @books.each do |book|
         if book[:status] == "unread" && book[:author] == author
           puts "\"#{book[:title]}\" by #{book[:author]} (#{book[:status]})"
         end
       end
     else
-      puts "\n"
       @books.each do |book|
         if book[:status] == "unread"
           puts "\"#{book[:title]}\" by #{book[:author]} (#{book[:status]})"
         end
       end
     end
-    puts "\n"
   end
 
-  private
   def self.add_book(title, author, status="unread")
     if @books.any? { |h| h[:title] == title }
-      puts "\nHorrible news: The library already has that book.\n\n"
+      puts "Horrible news: The library already has that book."
     else
       @books << {title: title, author: author, status: status}
-      puts "\nAdded \"#{title}\" by #{author}\n\n"
+      puts "Added \"#{title}\" by #{author}"
     end
   end
 end
@@ -76,23 +70,35 @@ def main
     break if command.nil? ## catches cntl-d for exits
     execute_command(command.strip)
   end
-  puts "\n\nBye!\n\n"
+  puts "\nBye!\n\n"
 end
 
 def execute_command(command)
   case command
   when /^add "(.*)" "(.*)"$/
+    puts "\n"
     Book.new("#{$1}", "#{$2}")
+    puts "\n"
   when /^read "(.*)"$/
+    puts "\n"
     Book.read $1
+    puts "\n"
   when /^show all$/
+    puts "\n"
     Book.all
+    puts "\n"
   when /^show unread$/
+    puts "\n"
     Book.unread
+    puts "\n"
   when /^show all by "(.*)"$/
+    puts "\n"
     Book.all $1
+    puts "\n"
   when /^show unread by "(.*)"$/
+    puts "\n"
     Book.unread $1
+    puts "\n"
   when /^help$/
     puts <<-EOS
     add \"<book title>\" \"<author>\" - adds a book to the library
